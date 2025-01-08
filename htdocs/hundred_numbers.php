@@ -19,19 +19,16 @@ function get_prime_mapping_from_range($max) {
 }
 
 $prime_mapping = get_prime_mapping_from_range($row_size * $col_size);
-$count = 1;
-for ($i=1; $i<=$row_size; $i++ ){
+for ($i=1; $i<=$row_size*$col_size; $i++ ){
     $color = "white";
-    if ($prime_mapping[$count]){
+    if ($prime_mapping[$i]){
         $color = "yellow";
     }
-    echo "<td style='border-style:solid; background-color:$color; width: 40px; height: 40px'>$count</td>";
-    if (($i % $row_size) == 0 && $count < $row_size*$col_size){
+    echo "<td style='border-style:solid; background-color:$color; width: 40px; height: 40px'>$i</td>";
+    if (($i % $row_size) == 0 ){
         echo "</tr>";
-        $i = 0;
         echo "<tr>";
     }
-    $count += 1;
 }
 echo "<tr>";
 echo "</table>";
