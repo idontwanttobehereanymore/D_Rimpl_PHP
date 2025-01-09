@@ -1,16 +1,11 @@
 <?php
-$row_size = 10;
-$col_size = 10;
-echo "<table>";
-echo "<tr>";
-
-function get_prime_mapping_from_range($max) {
-    $prime_map = array_fill(0, $max + 1, true);
+function get_prime_mapping_from_range($range) {
+    $prime_map = array_fill(0, $range + 1, true);
     $prime_map[0] = $prime_map[1] = false;
     // Sieve of Eratosthenes
-    for ($i = 2; $i*$i <= $max; $i++) {
+    for ($i = 2; $i*$i <= $range; $i++) {
         if ($prime_map[$i]) {
-            for ($j = $i*$i; $j <= $max; $j += $i) {
+            for ($j = $i*$i; $j <= $range; $j += $i) {
                 $prime_map[$j] = false;
             }
         }
@@ -18,17 +13,24 @@ function get_prime_mapping_from_range($max) {
     return $prime_map;
 }
 
-$prime_mapping = get_prime_mapping_from_range($row_size * $col_size);
-for ($i=1; $i<=$row_size*$col_size; $i++ ){
-    $color = "white";
-    if ($prime_mapping[$i]){
-        $color = "yellow";
+function create_table($x, $y){
+    $prime_mapping = get_prime_mapping_from_range($x * $y);
+    $result = "";
+    for ($i=1; $i<=$x*$y; $i++ ){
+        $color = "white";
+        if ($prime_mapping[$i]){
+            $color = "yellow";
+        }
+        $result .= "<td style='border-style:solid; background-color:$color; width: 40px; height: 40px'>$i</td>";
+        if (($i % $x) == 0 ){
+            $result .= "</tr><tr>";
+        }
     }
-    echo "<td style='border-style:solid; background-color:$color; width: 40px; height: 40px'>$i</td>";
-    if (($i % $row_size) == 0 ){
-        echo "</tr>";
-        echo "<tr>";
-    }
+    return $result;
 }
-echo "<tr>";
-echo "</table>";
+
+$row_size = 10;
+$col_size = 10;
+echo "<table><tr>";
+echo create_table($row_size, $col_size);
+echo "<tr></table>";
